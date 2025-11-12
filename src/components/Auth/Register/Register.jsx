@@ -1,10 +1,12 @@
 import React, { use } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { toast } from 'react-toastify';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { FcGoogle } from 'react-icons/fc';
 
 const Register = () => {
-    const { createUser, setUser, updateUser } = use(AuthContext);
+    const navigate = useNavigate();
+    const { createUser, setUser, updateUser, signInWithGoogle } = use(AuthContext);
     const handleRegister = (e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -17,12 +19,49 @@ const Register = () => {
                     .then(() => {
                         console.log(res.user);
                         setUser(res.user);
+                        const newUser = {
+                            name: name,
+                            email: email,
+                            image: photoURL
+                        }
+                        //create user in database
+                        fetch('http://localhost:3000/users', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": 'application/json'
+                            },
+                            body: JSON.stringify(newUser)
+                        }).then(res => res.json())
+                            .then(data => console.log(data));
                         toast('create user successfully');
+                          navigate('/');
                     })
                     .catch(error => console.log(error));
             })
             .catch(error => console.log(error));
     };
+    const handleGoogleLogIn = () => {
+        signInWithGoogle().then(res => {
+            // console.log(res.user);
+            setUser(res.user);
+            const newUser = {
+                name: res.user.displayName,
+                email: res.user.email,
+                image: res.user.photoURL
+            }
+            //create user in database
+            fetch('http://localhost:3000/users', {
+                method: "POST",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            }).then(res => res.json())
+                .then(data => console.log(data));
+            toast('log in successfully');
+            navigate('/')
+        })
+    }
 
     return (
         <div className="hero bg-base-200 my-6">
@@ -48,6 +87,7 @@ const Register = () => {
                                 <button type='submit' className="btn bg-gradient-to-r from-[#632EE3] to-[#9F62F2] text-lg text-white mt-4">Create Account</button>
                             </fieldset>
                         </form>
+                        <button onClick={handleGoogleLogIn} type='submit' className="btn mt-4 bg-[#f4f0f0] flex justify-center items-center text-lg"> < FcGoogle />Sign In With Google</button>
                     </div>
                 </div>
             </div>
