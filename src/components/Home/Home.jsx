@@ -4,7 +4,7 @@ const latestProducts = fetch('http://localhost:3000/latest-products').then(res =
 const Home = () => {
 
     return (
-        <div>
+        <div className='bg-[#D9D9D9]'>
 
             <h1>Home</h1>
             <Banner></Banner>
