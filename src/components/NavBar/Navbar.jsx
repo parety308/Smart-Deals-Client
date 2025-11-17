@@ -54,8 +54,6 @@ const Navbar = () => {
             <div className='flex gap-4'><NavLink to='/login' className="btn  border-[#9F62F2] text-xl font-semibold">Login</NavLink>
             <NavLink to='/register' className={`btn bg-gradient-to-r from-[#632EE3] to-[#9F62F2] text-lg text-white font-semibold`}>Register</NavLink></div>
         }
-
-
       </div>
     </div>
   );
