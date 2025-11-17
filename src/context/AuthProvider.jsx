@@ -51,7 +51,8 @@ const updateUser=(user)=>{
         user,
         setUser,
         signOutUser,
-        updateUser
+        updateUser,
+        loading
     }
 
     return (
